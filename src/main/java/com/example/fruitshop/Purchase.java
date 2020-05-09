@@ -18,6 +18,9 @@ public class Purchase {
     @Column(name="price")
     private Float price;
 
+    @Column(name="applyDiscount")
+    private boolean applyDiscount;
+
 
     Purchase(FinalPurchase finalPurchase, Fruit fruit, Integer quantity){
         this.finalPurchase = finalPurchase;
@@ -47,6 +50,14 @@ public class Purchase {
 
     public void setQuantity(Integer quantity) {
         this.quantity = quantity;
+    }
+
+    public boolean isApplyDiscount() {
+        return applyDiscount;
+    }
+
+    public void setApplyDiscount() {
+        this.applyDiscount = fruit.getOffer().checkDiscount(quantity) != 0;
     }
 
     public Float getPrice() {

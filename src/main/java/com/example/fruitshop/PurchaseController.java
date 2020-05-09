@@ -30,14 +30,8 @@ public class PurchaseController {
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/")
     public Purchase makePurchase(@RequestBody Purchase purchase){
-
         purchase.setPrice();
-        FinalPurchase f = finalPurchaseRepository.findById(purchase.getFinalPurchase().getId()).get();
-        f.setTotalprice(purchase.getPrice());
-        f.getOffers().add(purchase.getFruit().getOffer());
-
-        finalPurchaseRepository.save(f);
-
+        addValuesToFinalPurchase(purchase);
         return purchaseRepository.save(purchase);
     }
 
@@ -54,4 +48,14 @@ public class PurchaseController {
                 .orElseThrow(()->new ResourceNotFoundException("No purchase found with id="+id));
     }
 
+    private void addValuesToFinalPurchase(Purchase purchase){
+        FinalPurchase f = finalPurchaseRepository.findById(purchase.getFinalPurchase().getId()).get();
+        f.setTotalprice(purchase.getPrice());
+
+        if(purchase.isApplyDiscount())
+            f.getOffers().add(purchase.getFruit().getOffer());
+        f.getFruits().add((purchase.getFruit()));
+
+        finalPurchaseRepository.save(f);
+    }
 }

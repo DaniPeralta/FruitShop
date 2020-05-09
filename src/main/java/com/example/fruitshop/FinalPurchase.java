@@ -12,6 +12,11 @@ public class FinalPurchase {
     @Column(name = "totalprice", nullable = false)
     private Float totalprice ;
 
+    @ManyToMany
+    @JoinColumn(name = "fruits")
+    private List<Fruit> fruits;
+
+    @OneToMany
     @JoinColumn(name = "offer_id")
     private List<Offer> offers;
 
@@ -43,5 +48,12 @@ public class FinalPurchase {
         this.offers = offers;
     }
 
+    public List<Fruit> getFruits() {
+        return fruits;
+    }
+
+    public void setFruits(List<Fruit> fruits) {
+        this.fruits = fruits;
+    }
 
 }

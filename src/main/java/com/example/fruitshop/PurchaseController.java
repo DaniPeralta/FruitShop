@@ -18,12 +18,18 @@ public class PurchaseController {
 
     @Autowired
     PurchaseRepository purchaseRepository;
-
-
+    
     @ResponseBody
     @GetMapping("")
     public List<Purchase> listPurchases(){
         return purchaseRepository.findAll();
+    }
+
+    @ResponseBody
+    @ResponseStatus(HttpStatus.CREATED)
+    @PostMapping("/startPurchase")
+    public FinalPurchase startPurchase(){
+        return finalPurchaseRepository.save(new FinalPurchase());
     }
 
     @ResponseBody
@@ -35,12 +41,6 @@ public class PurchaseController {
         return purchaseRepository.save(purchase);
     }
 
-    @ResponseBody
-    @ResponseStatus(HttpStatus.CREATED)
-    @PostMapping("/startPurchase")
-    public FinalPurchase startPurchase(){
-        return finalPurchaseRepository.save(new FinalPurchase());
-    }
 
     @GetMapping("/endPurchase/{id}")
     public FinalPurchase getFinal(@PathVariable("id") Integer id){
